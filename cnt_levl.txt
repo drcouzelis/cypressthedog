@@ -1,0 +1,21 @@
+
+
+
+new_level
+//---------------
+
+number  1
+
+start  300  20
+
+width  30
+//height  7
+
+walkground  level1.bmp
+farground  sunset.bmp
+
+//scroll ground 1, filename, x size, change in x
+scrollground1  far_trees.bmp  1280  3
+
+end_level
+
