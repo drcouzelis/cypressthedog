@@ -13,7 +13,7 @@ color_identity  53
 passable  2
 
 //file name and tile location
-file_name  tile1.bmp  1
+file_name  tiles.bmp  1
 
 end_tile
 
@@ -23,7 +23,7 @@ new_tile
 name  top_dirt
 color_identity  54  
 passable  0
-file_name  tile1.bmp  2
+file_name  tiles.bmp  2
 end_tile
 
 
@@ -32,7 +32,7 @@ new_tile
 name  filler_dirt
 color_identity  136
 passable  0
-file_name  tile1.bmp  3
+file_name  tiles.bmp  3
 end_tile
 
 
@@ -41,7 +41,7 @@ new_tile
 name  vine
 color_identity  129
 passable  1
-file_name  tile1.bmp  4
+file_name  tiles.bmp  4
 end_tile
 
 
@@ -51,7 +51,7 @@ new_tile
 name  tree_trunk
 color_identity  7
 passable  1
-file_name  tile1.bmp  5
+file_name  tiles.bmp  5
 end_tile
 
 new_tile
@@ -59,7 +59,7 @@ new_tile
 name  tree_trunk_top
 color_identity  6
 passable  1
-file_name  tile1.bmp  11
+file_name  tiles.bmp  11
 end_tile
 
 
@@ -70,7 +70,7 @@ new_tile
 name  tree_bottom
 color_identity  8
 passable  1
-file_name  tile1.bmp  6
+file_name  tiles.bmp  6
 end_tile
 
 new_tile
@@ -78,7 +78,7 @@ new_tile
 name  tree_left
 color_identity  9
 passable  1
-file_name  tile1.bmp  7
+file_name  tiles.bmp  7
 end_tile
 
 new_tile
@@ -86,7 +86,7 @@ new_tile
 name  tree_right
 color_identity  10
 passable  1
-file_name  tile1.bmp  8
+file_name  tiles.bmp  8
 end_tile
 
 new_tile
@@ -94,7 +94,7 @@ new_tile
 name  tree_filler
 color_identity  11
 passable  1
-file_name  tile1.bmp  9
+file_name  tiles.bmp  9
 end_tile
 
 
@@ -103,7 +103,7 @@ new_tile
 name  grass_blotch
 color_identity  77
 passable  1
-file_name  tile1.bmp  10
+file_name  tiles.bmp  10
 end_tile
 
 

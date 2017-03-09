@@ -136,7 +136,7 @@ int init_level (void)
    int i;
 
 
-   if ((file = fopen ( PKGDATADIR "/cnt_levl.txt", "r")) == NULL)
+   if ((file = fopen ( PKGDATADIR "/levels/levels.txt", "r")) == NULL)
       return (0);
 
    else
@@ -260,7 +260,7 @@ int init_tile (void)
    clear (temp_bmp);
 
 
-   if ((file = fopen ( PKGDATADIR "/cnt_tile.txt", "r")) == NULL)
+   if ((file = fopen ( PKGDATADIR "/levels/tiles.txt", "r")) == NULL)
       return (0);
 
    else

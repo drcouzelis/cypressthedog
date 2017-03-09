@@ -41,8 +41,8 @@ OO_CEDAR_TROOP * oo_new_cedar_troop (int x, int y)
    ptr->v_momentum = 0;
    ptr->h_momentum = 0;
 
-   init_anim_set (&(ptr->walk_anim), PKGDATADIR "/images/oo_cedar.bmp", 1, 2, 20);
-   init_anim_set (&(ptr->knocked_down_anim), PKGDATADIR "/images/oo_cedar.bmp", 2, 1, 0);
+   init_anim_set (&(ptr->walk_anim), PKGDATADIR "/images/cedar.bmp", 1, 2, 20);
+   init_anim_set (&(ptr->knocked_down_anim), PKGDATADIR "/images/cedar.bmp", 2, 1, 0);
    //printf (".2*seconds = %g \n", .2*SECONDS);  readkey ();
    //printf ("oo walk speed  %d \n", ptr->walk_anim.speed);  readkey ();
 
