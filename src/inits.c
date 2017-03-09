@@ -1,21 +1,3 @@
-/**
- * Copyright 2009 David Couzelis
- * 
- * This file is part of "Cypress and Tally".
- * 
- * "Cypress and Tally" is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * "Cypress and Tally" is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with "Cypress and Tally".  If not, see <http://www.gnu.org/licenses/>.
- */
 #include "datas.h"
 
 
@@ -106,11 +88,11 @@ void init_cc (CONTROLLABLE_CHAR *ptr)
    ptr->h_momentum = 0;
    ptr->v_momentum = 0;
 
-   init_anim_set (&(ptr->stand_anim), "cypress.bmp", 1, 1, 0);
-   init_anim_set (&(ptr->run_anim), "cypress.bmp", 4, 3, 20);
-   init_anim_set (&(ptr->jump_anim), "cypress.bmp", 2, 1, 0);
-   init_anim_set (&(ptr->fall_anim), "cypress.bmp", 3, 1, 0);
-   init_anim_set (&(ptr->dash_anim), "cypress.bmp", 1, 1, 0);
+   init_anim_set (&(ptr->stand_anim), PKGDATADIR "/images/cypress.bmp", 1, 1, 0);
+   init_anim_set (&(ptr->run_anim), PKGDATADIR "/images/cypress.bmp", 4, 3, 20);
+   init_anim_set (&(ptr->jump_anim), PKGDATADIR "/images/cypress.bmp", 2, 1, 0);
+   init_anim_set (&(ptr->fall_anim), PKGDATADIR "/images/cypress.bmp", 3, 1, 0);
+   init_anim_set (&(ptr->dash_anim), PKGDATADIR "/images/cypress.bmp", 1, 1, 0);
 
    ptr->sprite = create_bitmap (TILE_SIZE*3,TILE_SIZE*3);
    clear (ptr->sprite);
@@ -145,30 +127,31 @@ int init_anim_set (ANIM_SET *anim_set, char file_name[100], int y_loc, int how_m
 int init_level (void)
 {
 
-   LEVEL *temp_level;
+   LEVEL *temp_level = NULL;
 
-   FILE *leah;
+   FILE *file;
    char temp_str[200];
+   char full_path[200];
    int temp_int;
    int i;
 
 
-   if ((leah = fopen ("cnt_levl.txt", "r")) == NULL)
+   if ((file = fopen ( PKGDATADIR "/cnt_levl.txt", "r")) == NULL)
       return (0);
 
    else
    {
       //printf ("starting the level load \n");  //readkey ();
 
-      while ((fscanf (leah, "%s", temp_str)) != EOF)
+      while ((fscanf (file, "%s", temp_str)) != EOF)
          if (strcmp (temp_str, "new_level") == 0)
          {
             do
             {
-               fscanf (leah, "%s", temp_str);
+               fscanf (file, "%s", temp_str);
                if (strcmp (temp_str, "number") == 0)
                {
-                  fscanf (leah, "%d", &i);
+                  fscanf (file, "%d", &i);
                   temp_level = (LEVEL *) malloc (sizeof (LEVEL));
                   temp_level->number = i;
 
@@ -176,43 +159,52 @@ int init_level (void)
                }
                if (strcmp (temp_str, "width") == 0)
                {
-                  fscanf (leah, "%d", &(temp_level->w));
+                  fscanf (file, "%d", &(temp_level->w));
                   //printf ("width set \n");  //readkey ();
                   temp_level->h = 10;
                }
                if (strcmp (temp_str, "walkground") == 0)
                {
-                  fscanf (leah, "%s", temp_str);
+                  fscanf (file, "%s", temp_str);
 
                   temp_level->walk = create_bitmap (temp_level->w, temp_level->h);
                   clear (temp_level->walk);
 
-                  temp_level->walk = load_bitmap (temp_str, game_pal);
+                  full_path[0] = '\0';
+                  strcpy (full_path, PKGDATADIR "/levels/");
+                  strcpy (full_path, temp_str);
+                  temp_level->walk = load_bitmap (full_path, game_pal);
                   //printf ("walk bmp loaded \n");  //readkey ();
 
                }
                if (strcmp (temp_str, "farground") == 0)
                {
-                  fscanf (leah, "%s", temp_str);
+                  fscanf (file, "%s", temp_str);
 
                   temp_level->far = create_bitmap (SCRN_X, SCRN_Y);
                   clear (temp_level->far);
 
-                  temp_level->far = load_bitmap (temp_str, game_pal);
+                  full_path[0] = '\0';
+                  strcpy (full_path, PKGDATADIR "/images/");
+                  strcpy (full_path, temp_str);
+                  temp_level->far = load_bitmap (full_path, game_pal);
                   //printf ("farground loaded \n");  //readkey ();
 
                }
                if (strcmp (temp_str, "scrollground1") == 0)
                {
 
-                  fscanf (leah, "%s", temp_str);
-                  fscanf (leah, "%d", &temp_int);
+                  fscanf (file, "%s", temp_str);
+                  fscanf (file, "%d", &temp_int);
 
                   temp_level->ground1.bmp = create_bitmap (temp_int, SCRN_Y);
                   clear (temp_level->ground1.bmp);
 
-                  temp_level->ground1.bmp = load_bitmap (temp_str, game_pal);
-                  fscanf (leah, "%d", &(temp_level->ground1.change_x));
+                  full_path[0] = '\0';
+                  strcpy (full_path, PKGDATADIR "/images/");
+                  strcpy (full_path, temp_str);
+                  temp_level->ground1.bmp = load_bitmap (full_path, game_pal);
+                  fscanf (file, "%d", &(temp_level->ground1.change_x));
                   temp_level->ground1.pos = 0;
                   temp_level->ground1.cc_x = cypress.x;
                   //printf ("cypress.x = %d \n", cypress.x);  //readkey ();
@@ -220,14 +212,17 @@ int init_level (void)
                if (strcmp (temp_str, "scrollground2") == 0)
                {
 
-                  fscanf (leah, "%s", temp_str);
-                  fscanf (leah, "%d", &temp_int);
+                  fscanf (file, "%s", temp_str);
+                  fscanf (file, "%d", &temp_int);
 
                   temp_level->ground2.bmp = create_bitmap (temp_int, SCRN_Y);
                   clear (temp_level->ground2.bmp);
 
-                  temp_level->ground2.bmp = load_bitmap (temp_str, game_pal);
-                  fscanf (leah, "%d", &(temp_level->ground2.change_x));
+                  full_path[0] = '\0';
+                  strcpy (full_path, PKGDATADIR "/images/");
+                  strcpy (full_path, temp_str);
+                  temp_level->ground2.bmp = load_bitmap (full_path, game_pal);
+                  fscanf (file, "%d", &(temp_level->ground2.change_x));
                   temp_level->ground2.pos = 0;
                   temp_level->ground2.cc_x = cypress.x;
                }
@@ -251,10 +246,11 @@ int init_level (void)
 int init_tile (void)
 {
 
-   TILE *temp_tile;
+   TILE *temp_tile = NULL;
 
-   FILE *leah;
+   FILE *file;
    char temp_str[200];
+   char full_path[200];
    int i;
 
    BITMAP *temp_bmp;
@@ -264,22 +260,22 @@ int init_tile (void)
    clear (temp_bmp);
 
 
-   if ((leah = fopen ("cnt_tile.txt", "r")) == NULL)
+   if ((file = fopen ( PKGDATADIR "/cnt_tile.txt", "r")) == NULL)
       return (0);
 
    else
    {
       //printf ("starting the load \n");  readkey ();
 
-      while ((fscanf (leah, "%s", temp_str)) != EOF)
+      while ((fscanf (file, "%s", temp_str)) != EOF)
          if (strcmp (temp_str, "new_tile") == 0)
          {
             do
             {
-               fscanf (leah, "%s", temp_str);
+               fscanf (file, "%s", temp_str);
                if (strcmp (temp_str, "color_identity") == 0)
                {
-                  fscanf (leah, "%d", &i);
+                  fscanf (file, "%d", &i);
                   temp_tile = (TILE *) malloc (sizeof (TILE));
                   temp_tile->id_color = i;
 
@@ -287,20 +283,23 @@ int init_tile (void)
                }
                if (strcmp (temp_str, "passable") == 0)
                {
-                  fscanf (leah, "%d", &(temp_tile->passable));
+                  fscanf (file, "%d", &(temp_tile->passable));
                   //printf ("passable checked \n");  readkey ();
                }
                if (strcmp (temp_str, "file_name") == 0)
                {
-                  fscanf (leah, "%s", temp_str);
-                  temp_bmp = load_bitmap (temp_str, game_pal);
+                  fscanf (file, "%s", temp_str);
+                  full_path[0] = '\0';
+                  strcpy (full_path, PKGDATADIR "/images/");
+                  strcpy (full_path, temp_str);
+                  temp_bmp = load_bitmap (full_path, game_pal);
                   //printf ("temp bmp loaded \n");  readkey ();
 
                   temp_tile->bmp = create_bitmap (TILE_SIZE, TILE_SIZE);
                   clear (temp_tile->bmp);
                   //printf ("bmp cleared \n");  readkey ();
 
-                  fscanf (leah, "%d", &i);
+                  fscanf (file, "%d", &i);
                   //printf ("i = %d \n", i);  readkey ();
 
                   //blit (temp_bmp, screen, 0,0, 0,0, 32,32);  readkey ();

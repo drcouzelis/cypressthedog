@@ -1,21 +1,3 @@
-/**
- * Copyright 2009 David Couzelis
- * 
- * This file is part of "Cypress and Tally".
- * 
- * "Cypress and Tally" is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * "Cypress and Tally" is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with "Cypress and Tally".  If not, see <http://www.gnu.org/licenses/>.
- */
 #include "datas.h"
 
 
@@ -59,8 +41,8 @@ OO_CEDAR_TROOP * oo_new_cedar_troop (int x, int y)
    ptr->v_momentum = 0;
    ptr->h_momentum = 0;
 
-   init_anim_set (&(ptr->walk_anim), "oo_cedar.bmp", 1, 2, 20);
-   init_anim_set (&(ptr->knocked_down_anim), "oo_cedar.bmp", 2, 1, 0);
+   init_anim_set (&(ptr->walk_anim), PKGDATADIR "/images/oo_cedar.bmp", 1, 2, 20);
+   init_anim_set (&(ptr->knocked_down_anim), PKGDATADIR "/images/oo_cedar.bmp", 2, 1, 0);
    //printf (".2*seconds = %g \n", .2*SECONDS);  readkey ();
    //printf ("oo walk speed  %d \n", ptr->walk_anim.speed);  readkey ();
 
