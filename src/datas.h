@@ -10,12 +10,10 @@
 #define SCRN_Y  480 //200
 #define COLOR_DEPTH 8
 #define SECONDS  1000
-#define TIMER  2
 #define NUM_OF_TILES  256
 #define NUM_OF_LEVELS  50
 
-#define GAME_TICKER  100
-#define MAX_TICKER  1000000000
+#define GAME_TICKER  60
 
 
 typedef enum  {

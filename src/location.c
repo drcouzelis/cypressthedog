@@ -4,7 +4,7 @@
 
 int pos_check_passable (int pos_x, int pos_y, int size_x, int size_y, DIRECTION dir);
 int pos_passable_tile_check (int y_loc, int i, DIRECTION dir);
-int pos_change (int *orig_x, int *orig_y, int change_x, int change_y);
+int pos_change (int *orig_x, int *orig_y, int change_x, int change_y, int size_x, int size_y);
 
 
 
@@ -12,16 +12,13 @@ extern TILE *tile_set[NUM_OF_TILES];
 extern LEVEL *level_set[NUM_OF_LEVELS];
 extern int level;
 
-int pos_change (int *use_x, int *use_y, int change_x, int change_y)
+int pos_change (int *use_x, int *use_y, int change_x, int change_y, int size_x, int size_y)
 {
 
    DIRECTION dir;
    int x=0,y=0;
    int orig_x, orig_y;
    
-   //change_x*=2;
-   //change_y*=2;
-
    orig_x = *use_x;
    orig_y = *use_y;
 
@@ -38,21 +35,16 @@ int pos_change (int *use_x, int *use_y, int change_x, int change_y)
 
    while (*use_x != orig_x+change_x || *use_y != orig_y+change_y)
    {
-      if (pos_check_passable (*use_x, *use_y, TILE_SIZE, TILE_SIZE, dir))
+      if (pos_check_passable (*use_x, *use_y, size_x, size_y, dir))
       {
          *use_x += x*MOVE_CONST;
          *use_y += y*MOVE_CONST;
       }
       else
       {
-         //if (*use_y < 0)
-            //*use_y = 0;
          return (0);
       }
    }
-
-   //if (*use_y < 0)
-      //*use_y = 0;
 
    return (1);
 
@@ -62,7 +54,9 @@ int pos_change (int *use_x, int *use_y, int change_x, int change_y)
 int pos_passable_tile_check (int y_loc, int i, DIRECTION dir)
 {
 
-   if (i == 0)
+   if (i <= 0)
+      return (1);
+   if (!tile_set[i])
       return (1);
    if (tile_set[i]->passable == 0)
       return (0);

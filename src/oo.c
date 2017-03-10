@@ -13,7 +13,7 @@ void oo_walk (OO_CEDAR_TROOP *ptr);
 // External
 void anim_frame (ANIM_SET *ptr);
 int pos_check_passable (int pos_x, int pos_y, int size_x, int size_y, DIRECTION dir);
-int pos_change (int *orig_x, int *orig_y, int change_x, int change_y);
+int pos_change (int *orig_x, int *orig_y, int change_x, int change_y, int size_x, int size_y);
 int init_anim_set (ANIM_SET *anim_set, char file_name[100], int y_loc, int how_many_frames, int speed);
 
 
@@ -79,13 +79,13 @@ void oo_walk (OO_CEDAR_TROOP *ptr)
 
    if (ptr->facing == R)
    {
-      pos_change (&(ptr->x),&(ptr->y), 1,0);
+      pos_change (&(ptr->x),&(ptr->y), 1,0, TILE_SIZE, TILE_SIZE);
       if (!pos_check_passable (ptr->x, ptr->y, TILE_SIZE,TILE_SIZE, R))
          ptr->facing = L;
    }
    else if (ptr->facing == L)
    {
-      pos_change (&(ptr->x),&(ptr->y), -1,0);
+      pos_change (&(ptr->x),&(ptr->y), -1,0, TILE_SIZE, TILE_SIZE);
       if (!pos_check_passable (ptr->x, ptr->y, TILE_SIZE,TILE_SIZE, L))
          ptr->facing = R;
    }
@@ -104,10 +104,10 @@ void oo_add_momentum_d (OO_CEDAR_TROOP *ptr)
 
       if (ptr->v_momentum > 0)
       {
-         if (ptr->v_momentum <= 9)  pos_change (&(ptr->x), &(ptr->y), 0, 1);
-         else if (ptr->v_momentum <= 13)  pos_change (&(ptr->x), &(ptr->y), 0, 2);
-         else if (ptr->v_momentum <= 15)  pos_change (&(ptr->x), &(ptr->y), 0, 3);
-         else pos_change (&(ptr->x), &(ptr->y), 0, 4);
+         if (ptr->v_momentum <= 9)  pos_change (&(ptr->x), &(ptr->y), 0, 1, TILE_SIZE, TILE_SIZE);
+         else if (ptr->v_momentum <= 13)  pos_change (&(ptr->x), &(ptr->y), 0, 2, TILE_SIZE, TILE_SIZE);
+         else if (ptr->v_momentum <= 15)  pos_change (&(ptr->x), &(ptr->y), 0, 3, TILE_SIZE, TILE_SIZE);
+         else pos_change (&(ptr->x), &(ptr->y), 0, 4, TILE_SIZE, TILE_SIZE);
 
          if (ptr->y >= SCRN_Y)
             ptr->health = 0;

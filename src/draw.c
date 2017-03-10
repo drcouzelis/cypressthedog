@@ -7,9 +7,6 @@ void draw_walkground (LEVEL *ptr, int cc_x);
 void draw_scrollground (SCROLL *ptr, int cc_x);
 void anim_frame (ANIM_SET *ptr);
 
-// External
-int time_check (int time1, int time2);
-
 
 extern BITMAP *screen_buffer;
 extern CONTROLLABLE_CHAR cypress;
@@ -24,14 +21,16 @@ void anim_frame (ANIM_SET *ptr)
 {
    if (ptr->speed)   //set speed to 0 for no animation
    {
-      if (time_check (timer, ptr->time) >= ptr->speed)
+      ptr->time++;
+
+      if (ptr->time >= ptr->speed)
       {
          if (ptr->pos >= ptr->size)
             ptr->pos = 1;
          else
             ptr->pos += 1;
 
-         ptr->time = timer;
+         ptr->time = 0;
       }
    }
 }

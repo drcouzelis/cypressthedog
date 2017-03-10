@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "datas.h"
 
 
@@ -19,9 +20,7 @@ extern volatile int timer;
 
 void do_timer (void)
 {
-  timer+=1;
-  if (timer >= MAX_TICKER)
-     timer = 1;
+  timer++;
 }
 END_OF_FUNCTION (do_timer);
 
@@ -36,10 +35,10 @@ int init_game (void)
    set_color_depth (COLOR_DEPTH);
 
    install_timer ();
-   install_int_ex(do_timer,BPS_TO_TIMER(GAME_TICKER));
+   timer=0;
    LOCK_VARIABLE (timer);
    LOCK_FUNCTION (do_timer);
-   timer=0;
+   install_int_ex(do_timer,BPS_TO_TIMER(GAME_TICKER));
 
    for (x=0; x<NUM_OF_TILES; x+=1)
       tile_set[x] = NULL;
@@ -89,7 +88,7 @@ void init_cc (CONTROLLABLE_CHAR *ptr)
    ptr->v_momentum = 0;
 
    init_anim_set (&(ptr->stand_anim), PKGDATADIR "/images/cypress.bmp", 1, 1, 0);
-   init_anim_set (&(ptr->run_anim), PKGDATADIR "/images/cypress.bmp", 4, 3, 20);
+   init_anim_set (&(ptr->run_anim), PKGDATADIR "/images/cypress.bmp", 4, 3, 8);
    init_anim_set (&(ptr->jump_anim), PKGDATADIR "/images/cypress.bmp", 2, 1, 0);
    init_anim_set (&(ptr->fall_anim), PKGDATADIR "/images/cypress.bmp", 3, 1, 0);
    init_anim_set (&(ptr->dash_anim), PKGDATADIR "/images/cypress.bmp", 1, 1, 0);
@@ -110,8 +109,10 @@ int init_anim_set (ANIM_SET *anim_set, char file_name[100], int y_loc, int how_m
    anim_set->bmp = create_bitmap (how_many_frames*(3*TILE_SIZE), (3*TILE_SIZE));
    clear (anim_set->bmp);
 
-   if (!(temp_bmp = load_bitmap (file_name, game_pal)))
+   if (!(temp_bmp = load_bitmap (file_name, game_pal))) {
+      assert (temp_bmp);
       return (0);
+   }
    blit (temp_bmp, anim_set->bmp, 0,(y_loc-1)*(3*TILE_SIZE), 0,0, how_many_frames*(3*TILE_SIZE),(3*TILE_SIZE));
 
    anim_set->size = how_many_frames;
@@ -172,8 +173,9 @@ int init_level (void)
 
                   full_path[0] = '\0';
                   strcpy (full_path, PKGDATADIR "/levels/");
-                  strcpy (full_path, temp_str);
+                  strcat (full_path, temp_str);
                   temp_level->walk = load_bitmap (full_path, game_pal);
+                  assert (temp_level->walk);
                   //printf ("walk bmp loaded \n");  //readkey ();
 
                }
@@ -186,8 +188,9 @@ int init_level (void)
 
                   full_path[0] = '\0';
                   strcpy (full_path, PKGDATADIR "/images/");
-                  strcpy (full_path, temp_str);
+                  strcat (full_path, temp_str);
                   temp_level->far = load_bitmap (full_path, game_pal);
+                  assert (temp_level->far);
                   //printf ("farground loaded \n");  //readkey ();
 
                }
@@ -202,7 +205,8 @@ int init_level (void)
 
                   full_path[0] = '\0';
                   strcpy (full_path, PKGDATADIR "/images/");
-                  strcpy (full_path, temp_str);
+                  strcat (full_path, temp_str);
+                  assert (temp_level->ground1.bmp);
                   temp_level->ground1.bmp = load_bitmap (full_path, game_pal);
                   fscanf (file, "%d", &(temp_level->ground1.change_x));
                   temp_level->ground1.pos = 0;
@@ -220,8 +224,9 @@ int init_level (void)
 
                   full_path[0] = '\0';
                   strcpy (full_path, PKGDATADIR "/images/");
-                  strcpy (full_path, temp_str);
+                  strcat (full_path, temp_str);
                   temp_level->ground2.bmp = load_bitmap (full_path, game_pal);
+                  assert (temp_level->ground2.bmp);
                   fscanf (file, "%d", &(temp_level->ground2.change_x));
                   temp_level->ground2.pos = 0;
                   temp_level->ground2.cc_x = cypress.x;
@@ -291,8 +296,9 @@ int init_tile (void)
                   fscanf (file, "%s", temp_str);
                   full_path[0] = '\0';
                   strcpy (full_path, PKGDATADIR "/images/");
-                  strcpy (full_path, temp_str);
+                  strcat (full_path, temp_str);
                   temp_bmp = load_bitmap (full_path, game_pal);
+                  assert (temp_bmp);
                   //printf ("temp bmp loaded \n");  readkey ();
 
                   temp_tile->bmp = create_bitmap (TILE_SIZE, TILE_SIZE);

@@ -12,7 +12,6 @@
 
 void game_update (OO_CEDAR_TROOP *oo);
 void game_clean_up (void);
-int time_check (int time1, int time2);
 
 // External
 int init_game (void);
@@ -60,39 +59,55 @@ int main (void)
 
    bad_guy = (OO_CEDAR_TROOP *) oo_new_cedar_troop (33,5);
 
+   int timemark = 0;
 
-   do
-   {
+   timer = 0;
+   
+   while (!want_to_quit && cypress.health > 0) {
+       
+      while (timer == 0) {
+         rest (100 / GAME_TICKER);
+      }
 
       //initial blits to the screen buffer.
       draw_bgrounds (level_set[level], cypress.x);
-      //load new opp objects, animate cypress, animate opp objects....
-      game_update (bad_guy);
-      //individual characters are responsible for their own drawing to the screen buffer.
-      draw_screen ();
 
-      //textprintf (screen, font, 0,20, 1, "TIMER  %d", timer);
+      while (timer > 0) {
+        
+         timemark = timer;
+        
+         //load new opp objects, animate cypress, animate opp objects....
+         game_update (bad_guy);
+         //individual characters are responsible for their own drawing to the screen buffer.
+         draw_screen ();
 
-      if (key[KEY_ESC])
-         want_to_quit = T;
+         //textprintf (screen, font, 0,20, 1, "TIMER  %d", timer);
 
-      if (key[KEY_F]) {
-         if (fullscreen == 1) {
-            set_gfx_mode (GFX_AUTODETECT_WINDOWED, SCRN_X, SCRN_Y, 0, 0);
-            set_pallete (game_pal);
-            fullscreen = 0;
-         } else {
-            set_gfx_mode (GFX_AUTODETECT, SCRN_X, SCRN_Y, 0, 0);
-            set_pallete (game_pal);
-            fullscreen = 1;
+         if (key[KEY_ESC])
+            want_to_quit = T;
+
+         if (key[KEY_F]) {
+            if (fullscreen == 1) {
+               set_gfx_mode (GFX_AUTODETECT_WINDOWED, SCRN_X, SCRN_Y, 0, 0);
+               set_pallete (game_pal);
+               fullscreen = 0;
+            } else {
+               set_gfx_mode (GFX_AUTODETECT, SCRN_X, SCRN_Y, 0, 0);
+               set_pallete (game_pal);
+               fullscreen = 1;
+            }
          }
-      }
       
-      while (timer - game_rest < 2);
-      game_rest = timer;
-
+        
+         timer--;
+        
+         if (timemark <= timer) {
+            break;
+         }
+        
+     }
+      
    }
-   while (!want_to_quit && cypress.health > 0);
 
    game_clean_up ();
 
@@ -108,16 +123,6 @@ void game_update (OO_CEDAR_TROOP *oo)
    oo_update_cedar_troop (oo);
 
 }
-
-
-int time_check (int time1, int time2)
-{
-   //returns time 1 (a later time) minus time 2 (the earlier time).
-   if (time1 - time2 >= 0)
-      return (time1 - time2);
-   return (time1 - (time2 - MAX_TICKER));
-}
-
 
 
 void game_clean_up (void)

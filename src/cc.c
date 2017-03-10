@@ -2,6 +2,7 @@
 
 
 #define CC_MAX_H_MOMENTUM (TILE_SIZE/10)
+#define CC_SIZE 40
 
 
 //u=up, d=down, l=left, r=right
@@ -17,7 +18,7 @@ void cc_draw (CONTROLLABLE_CHAR *ptr);
 // External
 void anim_frame (ANIM_SET *ptr);
 int pos_check_passable (int pos_x, int pos_y, int size_x, int size_y, DIRECTION dir);
-int pos_change (int *orig_x, int *orig_y, int change_x, int change_y);
+int pos_change (int *orig_x, int *orig_y, int change_x, int change_y, int size_x, int size_y);
 
 //extern CONTROLLABLE_CHAR cypress;
 extern BITMAP *screen_buffer;
@@ -76,9 +77,9 @@ void cc_add_momentum_u (CONTROLLABLE_CHAR *ptr)
    if (ptr->v_momentum < 0)
    {
       //checks for hitting your head...
-      if (pos_check_passable (ptr->x, ptr->y, TILE_SIZE, TILE_SIZE, U))
+      if (pos_check_passable (ptr->x, ptr->y, CC_SIZE, CC_SIZE, U))
       {
-         pos_change (&(ptr->x), &(ptr->y), 0, ptr->v_momentum/2);
+         pos_change (&(ptr->x), &(ptr->y), 0, ptr->v_momentum/2, CC_SIZE, CC_SIZE);
          /*
          if (ptr->v_momentum <= -15)  pos_change (&(ptr->x), &(ptr->y), 0, -4);
          else if (ptr->v_momentum <= -13)  pos_change (&(ptr->x), &(ptr->y), 0, -3);
@@ -104,7 +105,7 @@ void cc_slow_momentum_h (CONTROLLABLE_CHAR *ptr)
    if (ptr->h_momentum > 0)
       ptr->h_momentum -= 1;
 
-   pos_change (&(ptr->x), &(ptr->y), ptr->h_momentum, 0);
+   pos_change (&(ptr->x), &(ptr->y), ptr->h_momentum, 0, CC_SIZE, CC_SIZE);
 
 }
 
@@ -118,7 +119,7 @@ void cc_add_momentum_l (CONTROLLABLE_CHAR *ptr)
    if (ptr->h_momentum < -CC_MAX_H_MOMENTUM)
       ptr->h_momentum = -CC_MAX_H_MOMENTUM;
 
-   pos_change (&(ptr->x), &(ptr->y), ptr->h_momentum, 0);
+   pos_change (&(ptr->x), &(ptr->y), ptr->h_momentum, 0, CC_SIZE, CC_SIZE);
 
 }
 
@@ -134,7 +135,7 @@ void cc_add_momentum_r (CONTROLLABLE_CHAR *ptr)
    if (ptr->h_momentum > CC_MAX_H_MOMENTUM)
       ptr->h_momentum = CC_MAX_H_MOMENTUM;
 
-   pos_change (&(ptr->x), &(ptr->y), ptr->h_momentum, 0);
+   pos_change (&(ptr->x), &(ptr->y), ptr->h_momentum, 0, CC_SIZE, CC_SIZE);
 
 }
 
@@ -147,7 +148,7 @@ void cc_add_momentum_d (CONTROLLABLE_CHAR *ptr)
    if (ptr->v_momentum >= 0)
    {
       //first find if you can fall down...
-      if (pos_check_passable (ptr->x, ptr->y, TILE_SIZE, TILE_SIZE, D))
+      if (pos_check_passable (ptr->x, ptr->y, CC_SIZE, CC_SIZE, D))
          ptr->v_momentum += 1;
       else
          ptr->v_momentum = 0;
@@ -155,7 +156,7 @@ void cc_add_momentum_d (CONTROLLABLE_CHAR *ptr)
       //now change the position according to momentum
       if (ptr->v_momentum > 0)
       {
-         pos_change (&(ptr->x), &(ptr->y), 0, ptr->v_momentum/2);
+         pos_change (&(ptr->x), &(ptr->y), 0, ptr->v_momentum/2, CC_SIZE, CC_SIZE);
          /*
          if (ptr->v_momentum <= 9)  pos_change (&(ptr->x), &(ptr->y), 0, 1);
          else if (ptr->v_momentum <= 13)  pos_change (&(ptr->x), &(ptr->y), 0, 2);
