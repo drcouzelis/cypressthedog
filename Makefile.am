@@ -1,6 +1,6 @@
 # Sources
 bin_PROGRAMS = cypressthedog
-cypressthedog_CPPFLAGS = -Wall -Werror -DPKGDATADIR='"$(pkgdatadir)"'
+cypressthedog_CPPFLAGS = -Wall -DPKGDATADIR='"$(pkgdatadir)"'
 cypressthedog_SOURCES = \
   src/cc.c \
   src/datas.h \
